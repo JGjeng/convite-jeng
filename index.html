@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Convite de Casamento | Jennifer & Guilherme</title>
-  
+
+  <!-- Page Flip Library -->
+  <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -14,101 +17,53 @@
     }
 
     body {
-      background-color: #2b2b2b;
+      background-color: #242220;
+      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    .convite-container {
-      width: 100%;
-      max-width: 460px;
-      height: 100vh;
-      height: 100dvh;
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
-      background-color: #f7f3ec;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    .convite-container::-webkit-scrollbar {
-      display: none;
-    }
-    .convite-container {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    .pagina {
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
+    .book-wrapper {
       position: relative;
+      width: 100%;
+      max-width: 440px;
+      height: 90vh;
+      height: 90dvh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #f7f3ec;
     }
 
-    .art-wrapper {
-      position: relative;
+    #flipbook {
       width: 100%;
       height: 100%;
-      max-height: 100dvh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: none; /* Revelado após inicialização */
     }
 
-    .art-wrapper img.bg {
+    .page {
+      background-color: #f7f3ec;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .page img.page-img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       display: block;
       pointer-events: none;
+      user-select: none;
     }
 
-    /* Indicador na primeira lâmina */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      color: #635245;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      animation: bounce 2s infinite;
-      pointer-events: none;
-      background: rgba(247, 243, 236, 0.9);
-      padding: 6px 14px;
-      border-radius: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    }
-
-    .scroll-indicator svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-    }
-
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-      40% { transform: translate(-50%, -8px); }
-      60% { transform: translate(-50%, -4px); }
-    }
-
-    /* Grade interativa dimensionada para a lâmina 4 */
+    /* Grid interativo na Página 4 */
     .grid-botoes {
       position: absolute;
       top: 25%;
@@ -119,7 +74,7 @@
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
       gap: 15px;
-      z-index: 10;
+      z-index: 50;
     }
 
     .btn-touch {
@@ -129,48 +84,118 @@
       border-radius: 18px;
       background: transparent;
       cursor: pointer;
-      transition: background 0.15s, transform 0.15s;
+      text-decoration: none;
     }
 
     .btn-touch:active {
       background: rgba(109, 91, 79, 0.2);
-      transform: scale(0.96);
+    }
+
+    /* Controles de Navegação Flutuantes */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(247, 243, 236, 0.9);
+      border: 1px solid #d4c8be;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .nav-btn:active {
+      transform: translateY(-50%) scale(0.92);
+    }
+
+    .nav-prev { left: 8px; }
+    .nav-next { right: 8px; }
+
+    .nav-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: #5a483e;
+    }
+
+    /* Rodapé com Contador de Páginas */
+    .footer-bar {
+      margin-top: 10px;
+      color: #b8aba0;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    /* Dica na primeira página */
+    .hint {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(247, 243, 236, 0.92);
+      color: #635245;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+      pointer-events: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      animation: pulse 2s infinite;
+      z-index: 20;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+      50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <div class="convite-container">
+  <div class="book-wrapper">
     
-    <!-- Lâmina 1 -->
-    <section class="pagina">
-      <div class="art-wrapper">
-        <img src="p1.jpg" alt="Capa" class="bg">
-        <div class="scroll-indicator">
-          <span>Role para abrir</span>
-          <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-        </div>
-      </div>
-    </section>
+    <!-- Botões laterais de navegação -->
+    <button class="nav-btn nav-prev" id="btnPrev" title="Página Anterior">
+      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    
+    <button class="nav-btn nav-next" id="btnNext" title="Próxima Página">
+      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+    </button>
 
-    <!-- Lâmina 2 -->
-    <section class="pagina">
-      <div class="art-wrapper">
-        <img src="p2.jpg" alt="Celebração" class="bg">
+    <!-- Livro 3D -->
+    <div id="flipbook">
+      
+      <!-- Página 1: Capa -->
+      <div class="page" data-density="hard">
+        <img src="p1.jpg" alt="Capa" class="page-img">
+        <div class="hint" id="hintCapa">Toque ou arraste para abrir &rarr;</div>
       </div>
-    </section>
 
-    <!-- Lâmina 3 -->
-    <section class="pagina">
-      <div class="art-wrapper">
-        <img src="p3.jpg" alt="Informações" class="bg">
+      <!-- Página 2: Convite -->
+      <div class="page">
+        <img src="p2.jpg" alt="Celebração" class="page-img">
       </div>
-    </section>
 
-    <!-- Lâmina 4 -->
-    <section class="pagina">
-      <div class="art-wrapper">
-        <img src="p4.jpg" alt="Ações" class="bg">
+      <!-- Página 3: Informações do Jantar/Pix -->
+      <div class="page">
+        <img src="p3.jpg" alt="Informações" class="page-img">
+      </div>
+
+      <!-- Página 4: Botões Interativos -->
+      <div class="page">
+        <img src="p4.jpg" alt="Ações" class="page-img">
         
         <div class="grid-botoes">
           <!-- 1. Confirme sua presença -->
@@ -186,16 +211,62 @@
           <a href="https://api.whatsapp.com/qr/FADDQMDGFSDWH1?autoload=1&app_absent=0" target="_blank" class="btn-touch" title="Fale com o Noivo"></a>
         </div>
       </div>
-    </section>
 
-    <!-- Lâmina 5 -->
-    <section class="pagina">
-      <div class="art-wrapper">
-        <img src="p5.jpg" alt="Agradecimento" class="bg">
+      <!-- Página 5: Contracapa -->
+      <div class="page" data-density="hard">
+        <img src="p5.jpg" alt="Agradecimento" class="page-img">
       </div>
-    </section>
 
+    </div>
   </div>
 
+  <div class="footer-bar">
+    <span id="pageCounter">1 / 5</span>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const flipContainer = document.getElementById('flipbook');
+      const counter = document.getElementById('pageCounter');
+      const hint = document.getElementById('hintCapa');
+
+      // Inicializa o Flipbook 3D
+      const pageFlip = new St.PageFlip(flipContainer, {
+        width: 420,
+        height: 594,
+        size: 'stretch',
+        minWidth: 280,
+        maxWidth: 600,
+        minHeight: 400,
+        maxHeight: 850,
+        maxShadowOpacity: 0.6,
+        showCover: true,
+        mobileScrollSupport: false,
+        useMouseEvents: true,
+        swipeDistance: 30
+      });
+
+      pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+      flipContainer.style.display = 'block';
+
+      // Atualiza contador e esconde dica após a 1ª virada
+      pageFlip.on('flip', (e) => {
+        const currentPage = e.data + 1;
+        counter.innerText = `${currentPage} / 5`;
+        if (currentPage > 1 && hint) {
+          hint.style.display = 'none';
+        }
+      });
+
+      // Controles das setas
+      document.getElementById('btnPrev').addEventListener('click', () => {
+        pageFlip.flipPrev();
+      });
+
+      document.getElementById('btnNext').addEventListener('click', () => {
+        pageFlip.flipNext();
+      });
+    });
+  </script>
 </body>
 </html>
