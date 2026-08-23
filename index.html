@@ -14,7 +14,7 @@
     }
 
     body {
-      background-color: #1a1a1a;
+      background-color: #2b2b2b;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -22,20 +22,18 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    /* Contêiner de rolagem com efeito Snap */
     .convite-container {
       width: 100%;
-      max-width: 450px;
+      max-width: 460px;
       height: 100vh;
       height: 100dvh;
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
       background-color: #f7f3ec;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     }
 
-    /* Oculta barra de rolagem */
     .convite-container::-webkit-scrollbar {
       display: none;
     }
@@ -44,7 +42,6 @@
       scrollbar-width: none;
     }
 
-    /* Cada página em tela cheia na proporção 9:16 */
     .pagina {
       width: 100%;
       height: 100vh;
@@ -55,59 +52,69 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      background-color: #f7f3ec;
     }
 
-    .pagina img.bg {
+    .art-wrapper {
+      position: relative;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      max-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .art-wrapper img.bg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       display: block;
       pointer-events: none;
     }
 
-    /* Indicador animado de arraste na capa */
+    /* Indicador na primeira lâmina */
     .scroll-indicator {
       position: absolute;
-      bottom: 25px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       color: #635245;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
       animation: bounce 2s infinite;
       pointer-events: none;
-      background: rgba(247, 243, 236, 0.85);
+      background: rgba(247, 243, 236, 0.9);
       padding: 6px 14px;
       border-radius: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
 
     .scroll-indicator svg {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       fill: currentColor;
     }
 
     @keyframes bounce {
       0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-      40% { transform: translate(-50%, -10px); }
-      60% { transform: translate(-50%, -5px); }
+      40% { transform: translate(-50%, -8px); }
+      60% { transform: translate(-50%, -4px); }
     }
 
-    /* Grade com botões sobre os ícones da Página 4 */
+    /* Grade interativa dimensionada para a lâmina 4 */
     .grid-botoes {
       position: absolute;
       top: 25%;
-      left: 6%;
-      width: 88%;
-      height: 48%;
+      left: 8%;
+      width: 84%;
+      height: 50%;
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
@@ -119,15 +126,14 @@
       display: block;
       width: 100%;
       height: 100%;
-      border-radius: 16px;
+      border-radius: 18px;
       background: transparent;
       cursor: pointer;
       transition: background 0.15s, transform 0.15s;
     }
 
-    /* Feedback tátil ao clicar */
     .btn-touch:active {
-      background: rgba(109, 91, 79, 0.18);
+      background: rgba(109, 91, 79, 0.2);
       transform: scale(0.96);
     }
   </style>
@@ -136,48 +142,57 @@
 
   <div class="convite-container">
     
-    <!-- Lâmina 1: Capa com Selo e Flores -->
+    <!-- Lâmina 1 -->
     <section class="pagina">
-      <img src="p1.jpg" alt="Capa do Convite" class="bg">
-      <div class="scroll-indicator">
-        <span>Role para abrir</span>
-        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+      <div class="art-wrapper">
+        <img src="p1.jpg" alt="Capa" class="bg">
+        <div class="scroll-indicator">
+          <span>Role para abrir</span>
+          <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        </div>
       </div>
     </section>
 
-    <!-- Lâmina 2: Venha celebrar nosso amor... -->
+    <!-- Lâmina 2 -->
     <section class="pagina">
-      <img src="p2.jpg" alt="Detalhes do Casamento" class="bg">
-    </section>
-
-    <!-- Lâmina 3: Mensagem aos Convidados e Informações do Jantar/Pix -->
-    <section class="pagina">
-      <img src="p3.jpg" alt="Informações Jantar e Presente" class="bg">
-    </section>
-
-    <!-- Lâmina 4: Botões Interativos -->
-    <section class="pagina">
-      <img src="p4.jpg" alt="Menu de Ações" class="bg">
-      
-      <!-- Áreas Clicáveis sobre os 4 ícones -->
-      <div class="grid-botoes">
-        <!-- 1. Confirme sua presença -->
-        <a href="https://jgjeng.github.io/casamento-jeng/" class="btn-touch" title="Confirmar Presença"></a>
-
-        <!-- 2. Localização (Google Maps) -->
-        <a href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Racket+Garden+Nova+Hartz+RS" target="_blank" class="btn-touch" title="Localização no Mapa"></a>
-
-        <!-- 3. Fale com a Noiva -->
-        <a href="https://api.whatsapp.com/qr/GPJ7C7NJDKHXC1?autoload=1&app_absent=0" target="_blank" class="btn-touch" title="Fale com a Noiva"></a>
-
-        <!-- 4. Fale com o Noivo -->
-        <a href="https://api.whatsapp.com/qr/FADDQMDGFSDWH1?autoload=1&app_absent=0" target="_blank" class="btn-touch" title="Fale com o Noivo"></a>
+      <div class="art-wrapper">
+        <img src="p2.jpg" alt="Celebração" class="bg">
       </div>
     </section>
 
-    <!-- Lâmina 5: Aguardamos Vocês! -->
+    <!-- Lâmina 3 -->
     <section class="pagina">
-      <img src="p5.jpg" alt="Encerramento" class="bg">
+      <div class="art-wrapper">
+        <img src="p3.jpg" alt="Informações" class="bg">
+      </div>
+    </section>
+
+    <!-- Lâmina 4 -->
+    <section class="pagina">
+      <div class="art-wrapper">
+        <img src="p4.jpg" alt="Ações" class="bg">
+        
+        <div class="grid-botoes">
+          <!-- 1. Confirme sua presença -->
+          <a href="https://jgjeng.github.io/casamento-jeng/" class="btn-touch" title="Confirmar Presença"></a>
+
+          <!-- 2. Localização -->
+          <a href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Racket+Garden+Nova+Hartz+RS" target="_blank" class="btn-touch" title="Localização"></a>
+
+          <!-- 3. Fale com a Noiva -->
+          <a href="https://api.whatsapp.com/qr/GPJ7C7NJDKHXC1?autoload=1&app_absent=0" target="_blank" class="btn-touch" title="Fale com a Noiva"></a>
+
+          <!-- 4. Fale com o Noivo -->
+          <a href="https://api.whatsapp.com/qr/FADDQMDGFSDWH1?autoload=1&app_absent=0" target="_blank" class="btn-touch" title="Fale com o Noivo"></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lâmina 5 -->
+    <section class="pagina">
+      <div class="art-wrapper">
+        <img src="p5.jpg" alt="Agradecimento" class="bg">
+      </div>
     </section>
 
   </div>
