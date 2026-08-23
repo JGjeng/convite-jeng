@@ -2,272 +2,184 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Convite de Casamento | Jennifer & Guilherme</title>
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: #1f1f1f;
-      font-family: 'Montserrat', sans-serif;
+      background-color: #1a1a1a;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      color: #3e3835;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    /* Formato 9:16 Otimizado Mobile */
-    .mobile-frame {
+    /* Contêiner de rolagem com efeito Snap */
+    .convite-container {
       width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      background: #f7f3ec url('fundo.jpg') no-repeat center top;
-      background-size: cover;
-      display: flex;
-      flex-direction: column;
+      max-width: 450px;
+      height: 100vh;
+      height: 100dvh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      background-color: #f7f3ec;
+    }
+
+    /* Oculta barra de rolagem */
+    .convite-container::-webkit-scrollbar {
+      display: none;
+    }
+    .convite-container {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Cada página em tela cheia na proporção 9:16 */
+    .pagina {
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
       position: relative;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    }
-
-    .content {
-      padding: 75px 22px 50px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .sub-tag {
-      font-size: 0.72rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #7b6d64;
-      margin-bottom: 6px;
-    }
-
-    .blessing {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      font-style: italic;
-      color: #63544c;
-      margin-bottom: 4px;
-    }
-
-    h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.35rem;
-      font-weight: 600;
-      color: #433228;
-      line-height: 1.1;
-      margin-bottom: 12px;
-    }
-
-    /* Cartão Principal Translúcido */
-    .card-info {
-      background: rgba(255, 255, 255, 0.90);
-      backdrop-filter: blur(8px);
-      border-radius: 16px;
-      padding: 20px 18px;
-      margin: 10px 0 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-      border: 1px solid rgba(255, 255, 255, 0.7);
-    }
-
-    .event-details {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.22rem;
-      font-weight: 600;
-      color: #3b2c24;
-      line-height: 1.4;
-      margin-bottom: 14px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #e5dbd0;
-    }
-
-    .event-details span {
-      display: block;
-      font-size: 1.05rem;
-      color: #6e5e54;
-      font-weight: normal;
-    }
-
-    .text-body {
-      font-size: 0.82rem;
-      line-height: 1.55;
-      color: #4f443e;
-      margin-bottom: 12px;
-    }
-
-    .dinner-highlight {
-      background-color: #f6efe6;
-      border-radius: 10px;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 0.8rem;
-      line-height: 1.45;
-      color: #4a3d36;
-      border: 1px dashed #c9baa9;
-    }
-
-    .dinner-highlight strong {
-      color: #7a4627;
-    }
-
-    .deadlines {
-      font-size: 0.78rem;
-      color: #5d4d44;
-      line-height: 1.5;
-    }
-
-    .deadlines strong {
-      color: #302621;
-    }
-
-    /* Botões Interativos */
-    .action-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .btn-action {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      gap: 4px;
-      background-color: #6d5b4f;
-      color: #ffffff;
-      text-decoration: none;
-      padding: 12px 8px;
-      border-radius: 10px;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .pagina img.bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    /* Indicador animado de arraste na capa */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: #635245;
       font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 0.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      box-shadow: 0 4px 10px rgba(109, 91, 79, 0.25);
-      transition: transform 0.15s, background-color 0.2s;
+      animation: bounce 2s infinite;
+      pointer-events: none;
+      background: rgba(247, 243, 236, 0.85);
+      padding: 6px 14px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .btn-action:hover {
-      background-color: #55443a;
-    }
-
-    .btn-action:active {
-      transform: scale(0.97);
-    }
-
-    .btn-action.highlight {
-      grid-column: span 2;
-      background-color: #8c6e58;
-      padding: 14px;
-      font-size: 0.85rem;
-    }
-
-    .btn-action.highlight:hover {
-      background-color: #755944;
-    }
-
-    .btn-action svg {
+    .scroll-indicator svg {
       width: 18px;
       height: 18px;
       fill: currentColor;
     }
 
-    .footer {
-      margin-top: 18px;
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      color: #5a4940;
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+      40% { transform: translate(-50%, -10px); }
+      60% { transform: translate(-50%, -5px); }
     }
 
-    .footer p {
-      font-size: 1.15rem;
-      letter-spacing: 1px;
+    /* Grade com botões sobre os ícones da Página 4 */
+    .grid-botoes {
+      position: absolute;
+      top: 25%;
+      left: 6%;
+      width: 88%;
+      height: 48%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 15px;
+      z-index: 10;
     }
 
-    .footer .sig {
-      font-size: 1.35rem;
-      font-weight: 600;
+    .btn-touch {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    /* Feedback tátil ao clicar */
+    .btn-touch:active {
+      background: rgba(109, 91, 79, 0.18);
+      transform: scale(0.96);
     }
   </style>
 </head>
 <body>
 
-  <div class="mobile-frame">
-    <div class="content">
+  <div class="convite-container">
+    
+    <!-- Lâmina 1: Capa com Selo e Flores -->
+    <section class="pagina">
+      <img src="p1.jpg" alt="Capa do Convite" class="bg">
+      <div class="scroll-indicator">
+        <span>Role para abrir</span>
+        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+      </div>
+    </section>
+
+    <!-- Lâmina 2: Venha celebrar nosso amor... -->
+    <section class="pagina">
+      <img src="p2.jpg" alt="Detalhes do Casamento" class="bg">
+    </section>
+
+    <!-- Lâmina 3: Mensagem aos Convidados e Informações do Jantar/Pix -->
+    <section class="pagina">
+      <img src="p3.jpg" alt="Informações Jantar e Presente" class="bg">
+    </section>
+
+    <!-- Lâmina 4: Botões Interativos -->
+    <section class="pagina">
+      <img src="p4.jpg" alt="Menu de Ações" class="bg">
       
-      <span class="sub-tag">Celebração de Casamento</span>
-      <div class="blessing">Com a bênção de Deus</div>
-      <h1>Jennifer &amp; Guilherme</h1>
+      <!-- Áreas Clicáveis sobre os 4 ícones -->
+      <div class="grid-botoes">
+        <!-- 1. Confirme sua presença -->
+        <a href="https://jgjeng.github.io/casamento-jeng/" class="btn-touch" title="Confirmar Presença"></a>
 
-      <div class="card-info">
-        <div class="event-details">
-          10 de Outubro de 2026 às 18:00
-          <span>Espaço Racket Garden &bull; Nova Hartz / RS</span>
-        </div>
+        <!-- 2. Localização (Google Maps) -->
+        <a href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Racket+Garden+Nova+Hartz+RS" target="_blank" class="btn-touch" title="Localização no Mapa"></a>
 
-        <p class="text-body">
-          Caro convidado, como você já sabe, temos nossa casinha e somos abençoados por tê-la repleta de aconchego e tudo que precisamos para nosso dia a dia. Nosso maior presente será sua companhia na data mais importante desta família que estamos a construir.
-        </p>
+        <!-- 3. Fale com a Noiva -->
+        <a href="https://api.whatsapp.com/qr/GPJ7C7NJDKHXC1?autoload=1&app_absent=0" target="_blank" class="btn-touch" title="Fale com a Noiva"></a>
 
-        <div class="dinner-highlight">
-          O jantar desta celebração será no valor de <strong>R$ 45,00</strong> por pessoa, mas teremos muita bebida e doces por conta do casal a noite toda!
-        </div>
-
-        <div class="deadlines">
-          <strong>Confirmação de presença:</strong> até <strong>25/09/2026</strong><br>
-          <strong>Pix do jantar:</strong> até <strong>05/10/2026</strong>
-        </div>
+        <!-- 4. Fale com o Noivo -->
+        <a href="https://api.whatsapp.com/qr/FADDQMDGFSDWH1?autoload=1&app_absent=0" target="_blank" class="btn-touch" title="Fale com o Noivo"></a>
       </div>
+    </section>
 
-      <!-- Grade de Botões Interativos -->
-      <div class="action-grid">
-        
-        <!-- Botão Confirmação (aponta para a página de confirmação) -->
-        <a href="https://jgjeng.github.io/casamento-jeng/" class="btn-action highlight">
-          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-          Confirme sua Presença
-        </a>
+    <!-- Lâmina 5: Aguardamos Vocês! -->
+    <section class="pagina">
+      <img src="p5.jpg" alt="Encerramento" class="bg">
+    </section>
 
-        <!-- Botão Localização (Google Maps) -->
-        <a href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Racket+Garden+Nova+Hartz+RS" target="_blank" class="btn-action highlight" style="background-color: #5c6b54;">
-          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-          Ver Localização no Mapa
-        </a>
-
-        <!-- Fale com a Noiva -->
-        <a href="https://wa.me/5551999999999?text=Oi%20J%C3%AAnnifer!%20Recebi%20o%20convite%20do%20casamento%20%E2%9D%A4%EF%B8%8F" target="_blank" class="btn-action">
-          <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-          Fale com a Noiva
-        </a>
-
-        <!-- Fale com o Noivo -->
-        <a href="https://wa.me/5551999999999?text=Oi%20Guilherme!%20Recebi%20o%20convite%20do%20casamento%20%E2%9D%A4%EF%B8%8F" target="_blank" class="btn-action">
-          <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-          Fale com o Noivo
-        </a>
-
-      </div>
-
-      <div class="footer">
-        <p>Aguardamos vocês com muito carinho!</p>
-        <div class="sig">Jennifer &amp; Guilherme (Jeng)</div>
-      </div>
-
-    </div>
   </div>
 
 </body>
